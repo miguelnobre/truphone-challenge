@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,5 +41,13 @@ public class FamilyController {
 
         return ResponseEntity
                 .ok(familyMapper.toDto(family));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FamilyDto>> getAllFamilies() {
+        List<Family> families = familyService.getAllFamilies();
+
+        return ResponseEntity
+                .ok(familyMapper.toDto(families));
     }
 }

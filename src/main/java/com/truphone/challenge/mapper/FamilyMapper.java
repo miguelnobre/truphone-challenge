@@ -5,10 +5,14 @@ import com.truphone.challenge.dto.FamilyDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper
 public interface FamilyMapper {
 
     FamilyDto toDto(Family family);
+
+    List<FamilyDto> toDto(List<Family> family);
 
     @Mapping(target = "id", ignore = true)
     Family toEntity(FamilyDto familyDto);

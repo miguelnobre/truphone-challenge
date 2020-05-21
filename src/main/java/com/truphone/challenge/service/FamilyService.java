@@ -24,4 +24,8 @@ public class FamilyService {
     public Optional<Family> getFamily(Long id) {
         return familyRepository.findById(id);
     }
+
+    public List<Family> getAllFamilies() {
+        return familyRepository.findAll();
+    }
 }

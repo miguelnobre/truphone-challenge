@@ -7,6 +7,9 @@ import com.truphone.challenge.repository.FamilyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class FamilyService {
@@ -16,5 +19,9 @@ public class FamilyService {
 
     public Family createFamily(FamilyDto familyDto) {
         return familyRepository.save(familyMapper.toEntity(familyDto));
+    }
+
+    public Optional<Family> getFamily(Long id) {
+        return familyRepository.findById(id);
     }
 }

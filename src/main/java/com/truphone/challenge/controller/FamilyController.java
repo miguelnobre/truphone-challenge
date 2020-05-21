@@ -2,10 +2,13 @@ package com.truphone.challenge.controller;
 
 import com.truphone.challenge.domain.Family;
 import com.truphone.challenge.dto.FamilyDto;
+import com.truphone.challenge.exception.FamilyNotFoundException;
 import com.truphone.challenge.mapper.FamilyMapper;
 import com.truphone.challenge.service.FamilyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +32,13 @@ public class FamilyController {
         return ResponseEntity
                 .created(new URI("api/families/" + family.getId()))
                 .body(familyMapper.toDto(family));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FamilyDto> getFamily(@PathVariable Long id) {
+        Family family = familyService.getFamily(id).orElseThrow(FamilyNotFoundException::new);
+
+        return ResponseEntity
+                .ok(familyMapper.toDto(family));
     }
 }

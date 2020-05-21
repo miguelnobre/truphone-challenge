@@ -29,6 +29,10 @@ public class FamilyService {
         return familyRepository.findAll();
     }
 
+    public List<Family> getFamiliesByCountryCode(String isoCountryCode) {
+        return familyRepository.findAllByCountryCode(isoCountryCode);
+    }
+
     public void deleteFamily(Family family) {
         familyRepository.delete(family);
     }

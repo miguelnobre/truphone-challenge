@@ -52,6 +52,14 @@ public class FamilyController {
                 .ok(familyMapper.toDto(families));
     }
 
+    @GetMapping("/country/{isoCountryCode}")
+    public ResponseEntity<List<FamilyDto>> getFamiliesByCountryCode(@PathVariable String isoCountryCode) {
+        List<Family> familiesByCountryCode = familyService.getFamiliesByCountryCode(isoCountryCode);
+
+        return ResponseEntity
+                .ok(familyMapper.toDto(familiesByCountryCode));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity deleteFamily(@PathVariable Long id) {
         Family family = familyService.getFamily(id).orElseThrow(FamilyNotFoundException::new);

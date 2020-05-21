@@ -28,4 +28,8 @@ public class FamilyService {
     public List<Family> getAllFamilies() {
         return familyRepository.findAll();
     }
+
+    public void deleteFamily(Family family) {
+        familyRepository.delete(family);
+    }
 }

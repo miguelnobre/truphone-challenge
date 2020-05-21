@@ -7,6 +7,7 @@ import com.truphone.challenge.mapper.FamilyMapper;
 import com.truphone.challenge.service.FamilyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,5 +50,16 @@ public class FamilyController {
 
         return ResponseEntity
                 .ok(familyMapper.toDto(families));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteFamily(@PathVariable Long id) {
+        Family family = familyService.getFamily(id).orElseThrow(FamilyNotFoundException::new);
+        if (!family.getFamilyMemberList().isEmpty()) {
+            throw new IllegalArgumentException("Family cannot have related Family Members!");
+        }
+        familyService.deleteFamily(family);
+
+        return ResponseEntity.ok(familyMapper.toDto(family));
     }
 }

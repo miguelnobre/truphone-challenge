@@ -19,4 +19,13 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(ex.getMessage());
     }
+
+    @ExceptionHandler
+    public ResponseEntity<String> illegalArgument(IllegalArgumentException ex) {
+        log.error(ex.getMessage(), ex);
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
 }

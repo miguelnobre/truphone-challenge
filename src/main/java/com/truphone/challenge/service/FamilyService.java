@@ -2,6 +2,8 @@ package com.truphone.challenge.service;
 
 import com.truphone.challenge.domain.Family;
 import com.truphone.challenge.dto.FamilyDto;
+import com.truphone.challenge.dto.UpdatePartiallyFamilyDto;
+import com.truphone.challenge.exception.FamilyNotFoundException;
 import com.truphone.challenge.mapper.FamilyMapper;
 import com.truphone.challenge.repository.FamilyRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.truphone.challenge.util.UtilsService.checkIdConsistency;
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +39,31 @@ public class FamilyService {
 
     public void deleteFamily(Family family) {
         familyRepository.delete(family);
+    }
+
+    public Family updateFamily(Long id, FamilyDto familyDto) {
+        checkIdConsistency(id, familyDto);
+
+        Family family = familyRepository.findById(familyDto.getId()).orElseThrow(FamilyNotFoundException::new);
+        family.setName(familyDto.getName());
+        family.setCountryCode(familyDto.getCountryCode());
+
+        return familyRepository.save(family);
+    }
+
+    public Family partialUpdateFamily(Long id, UpdatePartiallyFamilyDto familyDto) {
+        checkIdConsistency(id, familyDto);
+
+        Family family = familyRepository.findById(familyDto.getId()).orElseThrow(FamilyNotFoundException::new);
+
+        if (familyDto.getName() != null || familyDto.isNullAsDeleted()) {
+            family.setName(familyDto.getName());
+        }
+
+        if (familyDto.getCountryCode() != null || familyDto.isNullAsDeleted()) {
+            family.setCountryCode(familyDto.getCountryCode());
+        }
+
+        return familyRepository.save(family);
     }
 }

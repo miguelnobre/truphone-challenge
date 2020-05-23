@@ -52,4 +52,19 @@ public class FamilyMemberService {
         Family family = familyRepository.findById(familyId).orElseThrow(FamilyNotFoundException::new);
         return familyMemberRepository.findAllByFamily(family);
     }
+
+    public FamilyMember deleteFamilyMember(Long id) {
+        FamilyMember familyMember = familyMemberRepository.findById(id).orElseThrow(FamilyMemberNotFoundException::new);
+
+        // Remove bilateral relationship
+        FamilyMember spouse = familyMember.getSpouse();
+        if (spouse != null) {
+            spouse.setSpouse(null);
+            familyMemberRepository.save(spouse);
+        }
+
+        familyMemberRepository.delete(familyMember);
+
+        return familyMember;
+    }
 }

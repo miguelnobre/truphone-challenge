@@ -67,14 +67,10 @@ public class FamilyController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<FamilyDto> deleteFamily(@PathVariable Long id) {
-        Family family = familyService.getFamily(id).orElseThrow(FamilyNotFoundException::new);
-        if (!family.getFamilyMemberList().isEmpty()) {
-            throw new IllegalArgumentException("Family cannot have related Family Members!");
-        }
-        familyService.deleteFamily(family);
+        Family deletedFmily = familyService.deleteFamily(id);
 
         return ResponseEntity
-                .ok(familyMapper.toDto(family));
+                .ok(familyMapper.toDto(deletedFmily));
     }
 
     @PutMapping("/{id}")

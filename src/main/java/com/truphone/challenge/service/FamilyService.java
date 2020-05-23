@@ -37,8 +37,14 @@ public class FamilyService {
         return familyRepository.findAllByCountryCode(isoCountryCode);
     }
 
-    public void deleteFamily(Family family) {
+    public Family deleteFamily(Long id) {
+        Family family = familyRepository.findById(id).orElseThrow(FamilyNotFoundException::new);
+        if (!family.getFamilyMemberList().isEmpty()) {
+            throw new IllegalArgumentException("Family cannot have related Family Members!");
+        }
+
         familyRepository.delete(family);
+        return family;
     }
 
     public Family updateFamily(Long id, FamilyDto familyDto) {

@@ -73,18 +73,23 @@ public class FamilyController {
         }
         familyService.deleteFamily(family);
 
-        return ResponseEntity.ok(familyMapper.toDto(family));
+        return ResponseEntity
+                .ok(familyMapper.toDto(family));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<FamilyDto> updateFamily(@PathVariable Long id, @RequestBody FamilyDto familyDto) {
         Family family = familyService.updateFamily(id, familyDto);
-        return ResponseEntity.ok(familyMapper.toDto(family));
+
+        return ResponseEntity
+                .ok(familyMapper.toDto(family));
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<FamilyDto> partialUpdateFamily(@PathVariable Long id, @RequestBody UpdatePartiallyFamilyDto familyDto) {
         Family family = familyService.partialUpdateFamily(id, familyDto);
-        return ResponseEntity.ok(familyMapper.toDto(family));
+
+        return ResponseEntity
+                .ok(familyMapper.toDto(family));
     }
 }

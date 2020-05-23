@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FamilyPersonDto {
+public class FamilyPersonDto extends AbstractIdentifiableDto {
     private String firstName;
     private String middleName;
     private String lastName;

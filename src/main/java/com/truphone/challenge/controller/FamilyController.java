@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
+//The transaction needs to start at the Controller level due to the lazy load that occurs during the mapping
+@Transactional
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/families")
@@ -31,11 +33,11 @@ public class FamilyController {
     private final FamilyService familyService;
 
     @PostMapping
-    public ResponseEntity<FamilyDto> createFamily(@RequestBody FamilyDto familyDto) throws URISyntaxException {
+    public ResponseEntity<FamilyDto> createFamily(@RequestBody FamilyDto familyDto) {
         Family family = familyService.createFamily(familyDto);
 
         return ResponseEntity
-                .created(new URI("api/families/" + family.getId()))
+                .created(URI.create("api/families/" + family.getId()))
                 .body(familyMapper.toDto(family));
     }
 

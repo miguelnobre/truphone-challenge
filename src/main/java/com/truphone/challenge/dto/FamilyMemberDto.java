@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FamilyMemberDto {
+public class FamilyMemberDto extends AbstractIdentifiableDto {
     private FamilyDto family;
 
     private FamilyPersonDto father;

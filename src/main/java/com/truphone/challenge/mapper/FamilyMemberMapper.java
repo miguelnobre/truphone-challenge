@@ -21,4 +21,11 @@ public interface FamilyMemberMapper {
 
     // Needed to avoid circular mapping between FamilyMemberDto(s)
     FamilyPersonDto toFamilyPersonDto(FamilyMember familyMember);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "me.firstName", target = "firstName")
+    @Mapping(source = "me.middleName", target = "middleName")
+    @Mapping(source = "me.lastName", target = "lastName")
+    @Mapping(source = "me.dateOfBirth", target = "dateOfBirth")
+    FamilyMember toEntity(FamilyMemberDto familyMemberDto);
 }

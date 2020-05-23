@@ -1,9 +1,14 @@
 package com.truphone.challenge.util;
 
 import com.google.common.base.Preconditions;
+import com.truphone.challenge.domain.AbstractEntity;
 import com.truphone.challenge.dto.AbstractIdentifiableDto;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class UtilsService {
@@ -12,5 +17,11 @@ public final class UtilsService {
 
     public static <T extends AbstractIdentifiableDto> void checkIdConsistency(Long id, T entity) {
         Preconditions.checkArgument(id == entity.getId(), ID_INCONSISTENCY_ERROR_MESSAGE);
+    }
+
+    public static <T extends AbstractEntity> void enrichWithEntity(AbstractIdentifiableDto identifiableDto, Function<Long, T> fetchEntityMethod, Consumer<T> enrichMethod) {
+        Optional.ofNullable(identifiableDto)
+                .map(dto -> fetchEntityMethod.apply(dto.getId()))
+                .ifPresent(enrichMethod);
     }
 }

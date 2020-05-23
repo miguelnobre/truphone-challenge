@@ -3,6 +3,7 @@ package com.truphone.challenge.service;
 import com.truphone.challenge.domain.Family;
 import com.truphone.challenge.domain.FamilyMember;
 import com.truphone.challenge.dto.FamilyMemberDto;
+import com.truphone.challenge.exception.FamilyMemberNotFoundException;
 import com.truphone.challenge.exception.FamilyNotFoundException;
 import com.truphone.challenge.mapper.FamilyMemberMapper;
 import com.truphone.challenge.repository.FamilyMemberRepository;
@@ -41,6 +42,10 @@ public class FamilyMemberService {
         }
 
         return newFamilyMember;
+    }
+
+    public FamilyMember getFamilyMember(Long id) {
+        return familyMemberRepository.findById(id).orElseThrow(FamilyMemberNotFoundException::new);
     }
 
     public List<FamilyMember> findAllByFamily(Long familyId) {

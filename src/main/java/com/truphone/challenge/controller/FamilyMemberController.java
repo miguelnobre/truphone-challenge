@@ -35,6 +35,12 @@ public class FamilyMemberController {
                 .body(familyMemberMapper.toDto(familyMember));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<FamilyMemberDto> getFamilyMember(@PathVariable Long id) {
+        FamilyMember familyMember = familyMemberService.getFamilyMember(id);
+        return ResponseEntity.ok(familyMemberMapper.toDto(familyMember));
+    }
+
     @GetMapping("/families/{familyId}")
     public ResponseEntity<List<FamilyMemberDto>> getFamilyMembers(@PathVariable Long familyId) {
         List<FamilyMember> familyMembers = familyMemberService.findAllByFamily(familyId);

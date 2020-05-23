@@ -2,7 +2,6 @@ package com.truphone.challenge.service;
 
 import com.truphone.challenge.domain.Family;
 import com.truphone.challenge.dto.FamilyDto;
-import com.truphone.challenge.dto.UpdatePartiallyFamilyDto;
 import com.truphone.challenge.exception.FamilyNotFoundException;
 import com.truphone.challenge.mapper.FamilyMapper;
 import com.truphone.challenge.repository.FamilyRepository;
@@ -57,16 +56,16 @@ public class FamilyService {
         return familyRepository.save(family);
     }
 
-    public Family partialUpdateFamily(Long id, UpdatePartiallyFamilyDto familyDto) {
+    public Family partialUpdateFamily(Long id, FamilyDto familyDto) {
         checkIdConsistency(id, familyDto);
 
         Family family = familyRepository.findById(familyDto.getId()).orElseThrow(FamilyNotFoundException::new);
 
-        if (familyDto.getName() != null || familyDto.isNullAsDeleted()) {
+        if (familyDto.getName() != null) {
             family.setName(familyDto.getName());
         }
 
-        if (familyDto.getCountryCode() != null || familyDto.isNullAsDeleted()) {
+        if (familyDto.getCountryCode() != null) {
             family.setCountryCode(familyDto.getCountryCode());
         }
 

@@ -19,9 +19,10 @@ public final class UtilsService {
         Preconditions.checkArgument(id == entity.getId(), ID_INCONSISTENCY_ERROR_MESSAGE);
     }
 
-    public static <T extends AbstractEntity> void enrichWithEntity(AbstractIdentifiableDto identifiableDto, Function<Long, T> fetchEntityMethod, Consumer<T> enrichMethod) {
+    public static <T extends AbstractEntity> void attachEntity(AbstractIdentifiableDto identifiableDto, Function<Long, T> fetchEntityMethod, Consumer<T> setMethod) {
         Optional.ofNullable(identifiableDto)
-                .map(dto -> fetchEntityMethod.apply(dto.getId()))
-                .ifPresent(enrichMethod);
+                .map(AbstractIdentifiableDto::getId)
+                .map(fetchEntityMethod)
+                .ifPresent(setMethod);
     }
 }

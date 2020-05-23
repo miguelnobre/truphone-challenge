@@ -2,7 +2,6 @@ package com.truphone.challenge.controller;
 
 import com.truphone.challenge.domain.Family;
 import com.truphone.challenge.dto.FamilyDto;
-import com.truphone.challenge.dto.UpdatePartiallyFamilyDto;
 import com.truphone.challenge.exception.FamilyNotFoundException;
 import com.truphone.challenge.mapper.FamilyMapper;
 import com.truphone.challenge.service.FamilyService;
@@ -82,7 +81,7 @@ public class FamilyController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<FamilyDto> partialUpdateFamily(@PathVariable Long id, @RequestBody UpdatePartiallyFamilyDto familyDto) {
+    public ResponseEntity<FamilyDto> partialUpdateFamily(@PathVariable Long id, @RequestBody FamilyDto familyDto) {
         Family family = familyService.partialUpdateFamily(id, familyDto);
 
         return ResponseEntity

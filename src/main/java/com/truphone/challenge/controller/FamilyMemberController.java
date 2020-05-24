@@ -44,24 +44,21 @@ public class FamilyMemberController {
         FamilyMember familyMember = familyMemberService.getFamilyMember(id);
         FamilyMember spouse = familyMemberService.findSpouse(familyMember);
 
-        return ResponseEntity.
-                ok(familyMemberMapper.toDtoWithSpouse(familyMember, spouse));
+        return ResponseEntity.ok(familyMemberMapper.toDtoWithSpouse(familyMember, spouse));
     }
 
     @GetMapping("/families/{familyId}")
     public ResponseEntity<List<FamilyMemberDto>> getFamilyMembers(@PathVariable Long familyId) {
         List<FamilyMember> familyMembers = familyMemberService.findAllByFamily(familyId);
 
-        return ResponseEntity
-                .ok(familyMemberMapper.toDto(familyMembers));
+        return ResponseEntity.ok(familyMemberMapper.toDto(familyMembers));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<FamilyMemberDto> deleteFamilyMember(@PathVariable Long id) {
         FamilyMember deletedFamilyMember = familyMemberService.deleteFamilyMember(id);
 
-        return ResponseEntity.
-                ok(familyMemberMapper.toDto(deletedFamilyMember));
+        return ResponseEntity.ok(familyMemberMapper.toDto(deletedFamilyMember));
     }
 
     @PutMapping("/{id}")
@@ -69,8 +66,7 @@ public class FamilyMemberController {
         FamilyMember familyMember = familyMemberService.updateFamilyMember(id, familyMemberDto);
         FamilyMember spouse = familyMemberService.findSpouse(familyMember);
 
-        return ResponseEntity
-                .ok(familyMemberMapper.toDtoWithSpouse(familyMember, spouse));
+        return ResponseEntity.ok(familyMemberMapper.toDtoWithSpouse(familyMember, spouse));
     }
 
     @PatchMapping("/{id}")
@@ -78,7 +74,6 @@ public class FamilyMemberController {
         FamilyMember familyMember = familyMemberService.partialUpdateFamily(id, familyMemberDto);
         FamilyMember spouse = familyMemberService.findSpouse(familyMember);
 
-        return ResponseEntity
-                .ok(familyMemberMapper.toDtoWithSpouse(familyMember, spouse));
+        return ResponseEntity.ok(familyMemberMapper.toDtoWithSpouse(familyMember, spouse));
     }
 }

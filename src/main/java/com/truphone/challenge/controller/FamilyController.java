@@ -1,6 +1,7 @@
 package com.truphone.challenge.controller;
 
 import com.truphone.challenge.domain.Family;
+import com.truphone.challenge.dto.AgedFamilyDto;
 import com.truphone.challenge.dto.FamilyDto;
 import com.truphone.challenge.exception.FamilyNotFoundException;
 import com.truphone.challenge.mapper.FamilyMapper;
@@ -44,47 +45,52 @@ public class FamilyController {
     public ResponseEntity<FamilyDto> getFamily(@PathVariable Long id) {
         Family family = familyService.getFamily(id).orElseThrow(FamilyNotFoundException::new);
 
-        return ResponseEntity
-                .ok(familyMapper.toDto(family));
+        return ResponseEntity.ok(familyMapper.toDto(family));
     }
 
     @GetMapping
     public ResponseEntity<List<FamilyDto>> getAllFamilies() {
         List<Family> families = familyService.getAllFamilies();
 
-        return ResponseEntity
-                .ok(familyMapper.toDto(families));
+        return ResponseEntity.ok(familyMapper.toDto(families));
     }
 
     @GetMapping("/country/{isoCountryCode}")
     public ResponseEntity<List<FamilyDto>> getFamiliesByCountryCode(@PathVariable String isoCountryCode) {
         List<Family> familiesByCountryCode = familyService.getFamiliesByCountryCode(isoCountryCode);
 
-        return ResponseEntity
-                .ok(familyMapper.toDto(familiesByCountryCode));
+        return ResponseEntity.ok(familyMapper.toDto(familiesByCountryCode));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<FamilyDto> deleteFamily(@PathVariable Long id) {
         Family deletedFmily = familyService.deleteFamily(id);
 
-        return ResponseEntity
-                .ok(familyMapper.toDto(deletedFmily));
+        return ResponseEntity.ok(familyMapper.toDto(deletedFmily));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<FamilyDto> updateFamily(@PathVariable Long id, @RequestBody FamilyDto familyDto) {
         Family family = familyService.updateFamily(id, familyDto);
 
-        return ResponseEntity
-                .ok(familyMapper.toDto(family));
+        return ResponseEntity.ok(familyMapper.toDto(family));
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<FamilyDto> partialUpdateFamily(@PathVariable Long id, @RequestBody FamilyDto familyDto) {
         Family family = familyService.partialUpdateFamily(id, familyDto);
 
-        return ResponseEntity
-                .ok(familyMapper.toDto(family));
+        return ResponseEntity.ok(familyMapper.toDto(family));
+    }
+
+    @GetMapping("/aged")
+    public ResponseEntity<AgedFamilyDto> findAgedFamily() {
+        AgedFamilyDto agedFamilyDto = familyService.findAgedFamily();
+
+        if(agedFamilyDto == null) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(agedFamilyDto);
     }
 }

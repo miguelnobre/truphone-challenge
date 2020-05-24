@@ -44,3 +44,16 @@ INSERT INTO family_member(first_name, last_name, date_of_birth, family_id) value
 INSERT INTO family_member(first_name, last_name, date_of_birth, family_id) values ('Lurdes', 'Nobre', '1992-05-06', (select id from family where name = 'Nobre'));
 INSERT INTO family_member(first_name, last_name, date_of_birth, family_id) values ('John', 'Smith', '1992-10-14', (select id from family where name = 'Smith'));
 INSERT INTO family_member(first_name, last_name, date_of_birth, family_id) values ('Jane', 'Smith', '1992-05-06', (select id from family where name = 'Smith'));
+
+
+CREATE VIEW v_aged_family AS
+    SELECT
+     fm.family_id,
+     SUM(EXTRACT(EPOCH FROM fm.date_of_birth)) AS sum_age_as_epoch,
+     AVG(EXTRACT(EPOCH FROM fm.date_of_birth)) AS avg_age_as_epoch
+    FROM
+     family_member fm
+    group BY
+     fm.family_id
+    ORDER BY 2 ASC, 3 ASC
+    LIMIT 1;

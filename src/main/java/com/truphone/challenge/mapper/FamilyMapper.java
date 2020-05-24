@@ -1,6 +1,7 @@
 package com.truphone.challenge.mapper;
 
 import com.truphone.challenge.domain.Family;
+import com.truphone.challenge.dto.AgedFamilyDto;
 import com.truphone.challenge.dto.FamilyDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,4 +17,6 @@ public interface FamilyMapper {
 
     @Mapping(target = "id", ignore = true)
     Family toEntity(FamilyDto familyDto);
+
+    AgedFamilyDto toDto(Family agedFamily, int averageAge);
 }

@@ -45,7 +45,7 @@ INSERT INTO family_member(first_name, last_name, date_of_birth, family_id) value
 INSERT INTO family_member(first_name, last_name, date_of_birth, family_id) values ('John', 'Smith', '1992-10-14', (select id from family where name = 'Smith'));
 INSERT INTO family_member(first_name, last_name, date_of_birth, family_id) values ('Jane', 'Smith', '1992-05-06', (select id from family where name = 'Smith'));
 
-
+-- View With Aged Family
 CREATE VIEW v_aged_family AS
     SELECT
      fm.family_id,
@@ -55,5 +55,22 @@ CREATE VIEW v_aged_family AS
      family_member fm
     group BY
      fm.family_id
-    ORDER BY 2 ASC, 3 ASC
+    ORDER BY
+        2 ASC,
+        3 ASC
+    LIMIT 1;
+
+-- View with Fast Growing Family
+CREATE VIEW v_fast_growing_family AS
+    SELECT
+        family_id,
+        count(1)::decimal / (MAX(date_of_birth) - MIN(date_of_birth)) AS growing_rate,
+        count(1) AS total_members
+    FROM
+        family_member
+    GROUP BY
+        family_id
+    ORDER BY
+        2 DESC,
+        3 DESC
     LIMIT 1;

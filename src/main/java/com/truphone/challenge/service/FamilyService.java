@@ -2,12 +2,15 @@ package com.truphone.challenge.service;
 
 import com.truphone.challenge.domain.Family;
 import com.truphone.challenge.domain.view.AgedFamilyView;
+import com.truphone.challenge.domain.view.FastGrowingFamilyView;
 import com.truphone.challenge.dto.AgedFamilyDto;
 import com.truphone.challenge.dto.FamilyDto;
+import com.truphone.challenge.dto.FastGrowingFamilyDto;
 import com.truphone.challenge.exception.FamilyNotFoundException;
 import com.truphone.challenge.mapper.FamilyMapper;
 import com.truphone.challenge.repository.AgedFamilyRepository;
 import com.truphone.challenge.repository.FamilyRepository;
+import com.truphone.challenge.repository.FastGrowingFamilyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,7 @@ public class FamilyService {
     private final FamilyMapper familyMapper;
     private final FamilyRepository familyRepository;
     private final AgedFamilyRepository agedFamilyRepository;
+    private final FastGrowingFamilyRepository fastGrowingFamilyRepository;
 
     public Family createFamily(FamilyDto familyDto) {
         return familyRepository.save(familyMapper.toEntity(familyDto));
@@ -98,5 +102,17 @@ public class FamilyService {
         AgedFamilyDto agedFamilyDto = familyMapper.toDto(family, averageAge);
 
         return agedFamilyDto;
+    }
+
+    public FastGrowingFamilyDto findFastGrowingFamily() {
+        FastGrowingFamilyView fastGrowingFamily = fastGrowingFamilyRepository.findAll()
+                .stream()
+                .findFirst()
+                .orElse(null);
+
+        Family family = familyRepository.getOne(fastGrowingFamily.getFamilyId());
+        FastGrowingFamilyDto fastGrowingFamilyDto = familyMapper.toDto(family, fastGrowingFamily.getGrowingRate());
+
+        return fastGrowingFamilyDto;
     }
 }

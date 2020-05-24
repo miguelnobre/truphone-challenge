@@ -3,6 +3,7 @@ package com.truphone.challenge.controller;
 import com.truphone.challenge.domain.Family;
 import com.truphone.challenge.dto.AgedFamilyDto;
 import com.truphone.challenge.dto.FamilyDto;
+import com.truphone.challenge.dto.FastGrowingFamilyDto;
 import com.truphone.challenge.exception.FamilyNotFoundException;
 import com.truphone.challenge.mapper.FamilyMapper;
 import com.truphone.challenge.service.FamilyService;
@@ -87,10 +88,21 @@ public class FamilyController {
     public ResponseEntity<AgedFamilyDto> findAgedFamily() {
         AgedFamilyDto agedFamilyDto = familyService.findAgedFamily();
 
-        if(agedFamilyDto == null) {
+        if (agedFamilyDto == null) {
             return ResponseEntity.noContent().build();
         }
 
         return ResponseEntity.ok(agedFamilyDto);
+    }
+
+    @GetMapping("/fast-growing")
+    public ResponseEntity<FastGrowingFamilyDto> findFastGrowingFamily() {
+        FastGrowingFamilyDto fastGrowingFamilyDto = familyService.findFastGrowingFamily();
+
+        if (fastGrowingFamilyDto == null) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(fastGrowingFamilyDto);
     }
 }

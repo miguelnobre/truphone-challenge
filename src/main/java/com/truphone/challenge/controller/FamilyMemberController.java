@@ -32,18 +32,20 @@ public class FamilyMemberController {
     @PostMapping
     public ResponseEntity<FamilyMemberDto> createFamilyMember(@RequestBody FamilyMemberDto familyMemberDto) {
         FamilyMember familyMember = familyMemberService.createFamilyMember(familyMemberDto);
+        FamilyMember spouse = familyMemberService.findSpouse(familyMember);
 
         return ResponseEntity
                 .created(URI.create("api/family-members/" + familyMember.getId()))
-                .body(familyMemberMapper.toDto(familyMember));
+                .body(familyMemberMapper.toDtoWithSpouse(familyMember, spouse));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<FamilyMemberDto> getFamilyMember(@PathVariable Long id) {
         FamilyMember familyMember = familyMemberService.getFamilyMember(id);
+        FamilyMember spouse = familyMemberService.findSpouse(familyMember);
 
         return ResponseEntity.
-                ok(familyMemberMapper.toDto(familyMember));
+                ok(familyMemberMapper.toDtoWithSpouse(familyMember, spouse));
     }
 
     @GetMapping("/families/{familyId}")
@@ -65,16 +67,18 @@ public class FamilyMemberController {
     @PutMapping("/{id}")
     public ResponseEntity<FamilyMemberDto> updateFamilyMember(@PathVariable Long id, @RequestBody FamilyMemberDto familyMemberDto) {
         FamilyMember familyMember = familyMemberService.updateFamilyMember(id, familyMemberDto);
+        FamilyMember spouse = familyMemberService.findSpouse(familyMember);
 
         return ResponseEntity
-                .ok(familyMemberMapper.toDto(familyMember));
+                .ok(familyMemberMapper.toDtoWithSpouse(familyMember, spouse));
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<FamilyMemberDto> partialUpdateFamily(@PathVariable Long id, @RequestBody FamilyMemberDto familyMemberDto) {
         FamilyMember familyMember = familyMemberService.partialUpdateFamily(id, familyMemberDto);
+        FamilyMember spouse = familyMemberService.findSpouse(familyMember);
 
         return ResponseEntity
-                .ok(familyMemberMapper.toDto(familyMember));
+                .ok(familyMemberMapper.toDtoWithSpouse(familyMember, spouse));
     }
 }

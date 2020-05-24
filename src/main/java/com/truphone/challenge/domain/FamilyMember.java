@@ -24,7 +24,7 @@ public class FamilyMember extends AbstractEntity {
     private FamilyMember mother;
 
     @OneToOne(fetch = FetchType.LAZY)
-    private FamilyMember spouse;
+    private FamilyMarriage familyMarriage;
 
     private String firstName;
     private String middleName;

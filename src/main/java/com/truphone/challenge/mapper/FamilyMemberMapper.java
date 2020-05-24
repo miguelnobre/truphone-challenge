@@ -11,16 +11,26 @@ import java.util.List;
 @Mapper
 public interface FamilyMemberMapper {
 
+    // Needed to avoid circular mapping between FamilyMemberDto(s)
+    FamilyPersonDto toFamilyPersonDto(FamilyMember familyMember);
+
+    @Mapping(source = "firstName", target = "me.firstName")
+    @Mapping(source = "middleName", target = "me.middleName")
+    @Mapping(source = "lastName", target = "me.lastName")
+    @Mapping(source = "dateOfBirth", target = "me.dateOfBirth")
+    FamilyMemberDto toDto(FamilyMember familyMember);
+
     @Mapping(source = "familyMember.firstName", target = "me.firstName")
     @Mapping(source = "familyMember.middleName", target = "me.middleName")
     @Mapping(source = "familyMember.lastName", target = "me.lastName")
     @Mapping(source = "familyMember.dateOfBirth", target = "me.dateOfBirth")
-    FamilyMemberDto toDto(FamilyMember familyMember);
+    @Mapping(source = "familyMember.id", target = "id")
+    @Mapping(source = "familyMember.family", target = "family")
+    @Mapping(source = "familyMember.father", target = "father")
+    @Mapping(source = "familyMember.mother", target = "mother")
+    FamilyMemberDto toDtoWithSpouse(FamilyMember familyMember, FamilyMember spouse);
 
     List<FamilyMemberDto> toDto(List<FamilyMember> familyMember);
-
-    // Needed to avoid circular mapping between FamilyMemberDto(s)
-    FamilyPersonDto toFamilyPersonDto(FamilyMember familyMember);
 
     @Mapping(source = "me.firstName", target = "firstName")
     @Mapping(source = "me.middleName", target = "middleName")

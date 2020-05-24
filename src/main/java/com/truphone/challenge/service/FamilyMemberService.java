@@ -23,20 +23,21 @@ public class FamilyMemberService {
 
     private final FamilyRepository familyRepository;
     private final FamilyMemberMapper familyMemberMapper;
+    private final FamilyMarriageService familyMarriageService;
     private final FamilyMemberRepository familyMemberRepository;
 
     public FamilyMember createFamilyMember(FamilyMemberDto familyMemberDto) {
         FamilyMember newFamilyMember = familyMemberMapper.toEntity(familyMemberDto);
+        familyMemberRepository.save(newFamilyMember);
+
+        familyMarriageService.buildSpouseRelationShip(newFamilyMember, familyMemberDto.getSpouse().getId());
 
         // Attach related entities
         attachEntity(familyMemberDto.getFamily(), familyRepository::getOne, newFamilyMember::setFamily);
         attachEntity(familyMemberDto.getFather(), familyMemberRepository::getOne, newFamilyMember::setFather);
         attachEntity(familyMemberDto.getMother(), familyMemberRepository::getOne, newFamilyMember::setMother);
-        attachEntity(familyMemberDto.getSpouse(), familyMemberRepository::getOne, newFamilyMember::setSpouse);
 
-        addSpouseRelationship(newFamilyMember);
-
-        return familyMemberRepository.save(newFamilyMember);
+        return newFamilyMember;
     }
 
     public FamilyMember getFamilyMember(Long id) {
@@ -50,21 +51,22 @@ public class FamilyMemberService {
 
     public FamilyMember deleteFamilyMember(Long id) {
         FamilyMember familyMember = familyMemberRepository.findById(id).orElseThrow(FamilyMemberNotFoundException::new);
-        removeSpouseRelationship(familyMember);
 
+        familyMarriageService.destroyMarriage(familyMember);
         familyMemberRepository.delete(familyMember);
+
         return familyMember;
     }
 
     public FamilyMember updateFamilyMember(Long id, FamilyMemberDto familyMemberDto) {
         checkIdConsistency(id, familyMemberDto);
-        if (!familyMemberRepository.existsById(id)) {
-            throw new FamilyMemberNotFoundException();
-        }
+        FamilyMember familyMember = familyMemberRepository.findById(id).orElseThrow(FamilyMemberNotFoundException::new);
+        familyMarriageService.destroyMarriage(familyMember);
 
-        FamilyMember familyMember = familyMemberMapper.toEntity(familyMemberDto);
-        familyMember = familyMemberRepository.save(familyMember);
-        addSpouseRelationship(familyMember);
+        familyMember = familyMemberRepository.save(familyMemberMapper.toEntity(familyMemberDto));
+        if (familyMemberDto.getSpouse() != null) {
+            familyMarriageService.buildSpouseRelationShip(familyMember, familyMemberDto.getSpouse().getId());
+        }
 
         return familyMember;
     }
@@ -87,10 +89,9 @@ public class FamilyMemberService {
             familyMember.setMother(partialUpdatedFamilyMember.getMother());
         }
 
-        if (partialUpdatedFamilyMember.getSpouse() != null) {
-            removeSpouseRelationship(familyMember);
-            familyMember.setSpouse(partialUpdatedFamilyMember.getSpouse());
-            addSpouseRelationship(familyMember);
+        if (familyMemberDto.getSpouse() != null) {
+            familyMarriageService.destroyMarriage(familyMember);
+            familyMarriageService.buildSpouseRelationShip(familyMember, familyMemberDto.getSpouse().getId());
         }
 
         if (partialUpdatedFamilyMember.getFirstName() != null) {
@@ -112,25 +113,10 @@ public class FamilyMemberService {
         return familyMemberRepository.save(familyMember);
     }
 
-    /**
-     * Add Spouse Relationship between the Entity
-     */
-    private void addSpouseRelationship(FamilyMember familyMember) {
-        FamilyMember otherSpouse = familyMember.getSpouse();
-        if (otherSpouse != null) {
-            otherSpouse.setSpouse(familyMember);
-            familyMemberRepository.save(otherSpouse);
+    public FamilyMember findSpouse(FamilyMember familyMember) {
+        if (familyMember.getFamilyMarriage() == null) {
+            return null;
         }
-    }
-
-    /**
-     * Remove Spouse Relationship between the Entity
-     */
-    private void removeSpouseRelationship(FamilyMember familyMember) {
-        FamilyMember otherSpouse = familyMember.getSpouse();
-        if (otherSpouse != null) {
-            otherSpouse.setSpouse(null);
-            familyMemberRepository.save(otherSpouse);
-        }
+        return familyMemberRepository.findByFamilyMarriageAndIdNot(familyMember.getFamilyMarriage(), familyMember.getId());
     }
 }

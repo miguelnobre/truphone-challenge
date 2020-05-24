@@ -33,18 +33,6 @@ CREATE TABLE family_member
     updated_date            TIMESTAMPTZ             NULL            DEFAULT now()
 );
 
-
-
--- Initial dummy values for Family Entity
-INSERT INTO family(name, country_code) values ('Nobre', 'PRT');
-INSERT INTO family(name, country_code) values ('Smith', 'GBR');
-
--- Initial dummy values for FamilyMember Entity
-INSERT INTO family_member(first_name, last_name, date_of_birth, family_id) values ('Miguel', 'Nobre', '1992-10-14', (select id from family where name = 'Nobre'));
-INSERT INTO family_member(first_name, last_name, date_of_birth, family_id) values ('Lurdes', 'Nobre', '1992-05-06', (select id from family where name = 'Nobre'));
-INSERT INTO family_member(first_name, last_name, date_of_birth, family_id) values ('John', 'Smith', '1992-10-14', (select id from family where name = 'Smith'));
-INSERT INTO family_member(first_name, last_name, date_of_birth, family_id) values ('Jane', 'Smith', '1992-05-06', (select id from family where name = 'Smith'));
-
 -- View With Aged Family
 CREATE VIEW v_aged_family AS
     SELECT

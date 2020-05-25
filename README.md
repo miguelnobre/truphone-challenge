@@ -28,4 +28,8 @@ To kill the containers running inside Docker:
 ### Swaguer-UI
    * **Url:** http://localhost:8080/swagger-ui.html
    
-   
+#
+### Postman Collection
+
+Can be found a Postman collection file under the source root with all the requests available by this API:   
+ * Thruphone Challenge.postman_collection.json

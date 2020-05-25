@@ -1,0 +1,5 @@
+com/truphone/challenge/PostgreSQLEmbeddedContainer.class
+com/truphone/challenge/controller/FamiliyControllerIntegrationTest.class
+com/truphone/challenge/controller/FamilyMemberControllerIntegrationTest.class
+com/truphone/challenge/PostgreSQLEmbeddedContainer$Initializer.class
+com/truphone/challenge/IntegrationTest.class

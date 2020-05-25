@@ -16,7 +16,7 @@ import java.util.function.Function;
 public final class UtilsService {
 
     private static final String ID_INCONSISTENCY_ERROR_MESSAGE = "Id sent in the PATH must be the same as sent in the payload!";
-    private static final String ISO_COUNTRY_CODE_IS_NOT_VALID_MESSAGE = "ISO COuntry Code is not valid!";
+    private static final String ISO_COUNTRY_CODE_IS_NOT_VALID_MESSAGE = "ISO Country Code is not valid!";
 
     private static final Set<String> ISO_COUNTRIES = Locale.getISOCountries(Locale.IsoCountryCode.PART1_ALPHA3);
 

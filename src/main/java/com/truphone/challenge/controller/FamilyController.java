@@ -44,6 +44,11 @@ public class FamilyController {
     private final FamilyService familyService;
 
     @PostMapping
+    @ApiOperation(value = "Create a Family")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Entity created"),
+            @ApiResponse(code = 400, message = "If request data is invalid")
+    })
     public ResponseEntity<FamilyDto> createFamily(@RequestBody FamilyDto familyDto) {
         Family family = familyService.createFamily(familyDto);
 
@@ -52,7 +57,13 @@ public class FamilyController {
                 .body(familyMapper.toDto(family));
     }
 
+
     @GetMapping("/{id}")
+    @ApiOperation(value = "Get Family by Id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Entity requested"),
+            @ApiResponse(code = 404, message = "If Entity not found")
+    })
     public ResponseEntity<FamilyDto> getFamily(@PathVariable Long id) {
         Family family = familyService.getFamily(id).orElseThrow(FamilyNotFoundException::new);
 
@@ -60,6 +71,8 @@ public class FamilyController {
     }
 
     @GetMapping
+    @ApiOperation(value = "Get all Families")
+    @ApiResponse(code = 200, message = "List of families found")
     public ResponseEntity<PageDto<FamilyDto>> getAllFamilies(@RequestParam(defaultValue = "0") Integer offset,
                                                              @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer limit) {
 
@@ -69,6 +82,10 @@ public class FamilyController {
     }
 
     @GetMapping("/country/{isoCountryCode}")
+    @ApiOperation(value = "Get all Families by ISO Country Code")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "List of families that belongs to the Country Code sent")
+    })
     public ResponseEntity<PageDto<FamilyDto>> getFamiliesByCountryCode(@PathVariable String isoCountryCode,
                                                                        @RequestParam(defaultValue = "0") Integer offset,
                                                                        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer limit) {
@@ -79,6 +96,12 @@ public class FamilyController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete Family by Id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Deleted Entity"),
+            @ApiResponse(code = 400, message = "If Family couldn't be deleted due to having related Family Members"),
+            @ApiResponse(code = 404, message = "Entity not found")
+    })
     public ResponseEntity<FamilyDto> deleteFamily(@PathVariable Long id) {
         Family deletedFmily = familyService.deleteFamily(id);
 
@@ -86,6 +109,12 @@ public class FamilyController {
     }
 
     @PutMapping("/{id}")
+    @ApiOperation(value = "Full update a Family by Id", notes = "Should be used also to delete specific field(s)")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Updated Entity"),
+            @ApiResponse(code = 400, message = "If request data is invalid"),
+            @ApiResponse(code = 404, message = "Entity not found")
+    })
     public ResponseEntity<FamilyDto> updateFamily(@PathVariable Long id, @RequestBody FamilyDto familyDto) {
         Family family = familyService.updateFamily(id, familyDto);
 
@@ -93,6 +122,12 @@ public class FamilyController {
     }
 
     @PatchMapping("/{id}")
+    @ApiOperation(value = "Update partially a Family by Id", notes = "This method only handles adding or updating data. To delete information, PUT must be used")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Updated Entity"),
+            @ApiResponse(code = 400, message = "If request data is invalid"),
+            @ApiResponse(code = 404, message = "Entity not found")
+    })
     public ResponseEntity<FamilyDto> partialUpdateFamily(@PathVariable Long id, @RequestBody FamilyDto familyDto) {
         Family family = familyService.partialUpdateFamily(id, familyDto);
 

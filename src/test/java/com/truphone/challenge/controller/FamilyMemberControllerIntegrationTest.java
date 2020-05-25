@@ -1,12 +1,10 @@
 package com.truphone.challenge.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.truphone.challenge.IntegrationTest;
 import com.truphone.challenge.dto.FamilyDto;
 import com.truphone.challenge.dto.FamilyMemberDto;
 import com.truphone.challenge.dto.FamilyPersonDto;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,13 +28,8 @@ class FamilyMemberControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
     private ObjectMapper objectMapper;
-
-    @BeforeEach
-    public void setup() {
-        objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-    }
 
     @Test
     public void testCreateFamilyMember() throws Exception {

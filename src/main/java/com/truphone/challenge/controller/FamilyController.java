@@ -9,6 +9,9 @@ import com.truphone.challenge.exception.FamilyNotFoundException;
 import com.truphone.challenge.mapper.FamilyMapper;
 import com.truphone.challenge.mapper.PageMapper;
 import com.truphone.challenge.service.FamilyService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -97,6 +100,13 @@ public class FamilyController {
     }
 
     @GetMapping("/aged")
+    @ApiOperation(
+            value = "Returns the Family with the most accumulated age",
+            notes = "If there are 2 families with the same accumulated age, the one with the highest average age will be chosen")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 204, message = "If the are no Families stored in DB"),
+    })
     public ResponseEntity<AgedFamilyDto> findAgedFamily() {
         AgedFamilyDto agedFamilyDto = familyService.findAgedFamily();
 
@@ -108,6 +118,13 @@ public class FamilyController {
     }
 
     @GetMapping("/fast-growing")
+    @ApiOperation(
+            value = "Returns the Family with Fast-Growing Ratio",
+            notes = "If there are 2 families with the same ratio, the one with the most members will be chosen")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Fast-Growing Family"),
+            @ApiResponse(code = 204, message = "If the are no Families stored in DB"),
+    })
     public ResponseEntity<FastGrowingFamilyDto> findFastGrowingFamily() {
         FastGrowingFamilyDto fastGrowingFamilyDto = familyService.findFastGrowingFamily();
 

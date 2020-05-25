@@ -25,7 +25,7 @@ public final class UtilsService {
     }
 
     public static void checkIsoCountryCodeIsValid(String countryCode) {
-        Preconditions.checkArgument(ISO_COUNTRIES.contains(countryCode), ISO_COUNTRY_CODE_IS_NOT_VALID_MESSAGE);
+        Preconditions.checkArgument(countryCode != null && ISO_COUNTRIES.contains(countryCode), ISO_COUNTRY_CODE_IS_NOT_VALID_MESSAGE);
     }
 
     public static <T extends AbstractEntity> void attachEntity(AbstractIdentifiableDto identifiableDto, Function<Long, T> fetchEntityMethod, Consumer<T> setMethod) {

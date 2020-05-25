@@ -6,15 +6,18 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractEntity {
 
     @Id
@@ -24,8 +27,8 @@ public abstract class AbstractEntity {
     private Long id;
 
     @CreatedDate
-    private ZonedDateTime createdDate = ZonedDateTime.now();
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     @LastModifiedDate
-    private ZonedDateTime updatedDate;
+    private LocalDateTime updatedDate;
 }

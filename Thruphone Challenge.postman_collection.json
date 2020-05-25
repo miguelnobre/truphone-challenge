@@ -1,0 +1,502 @@
+{
+	"info": {
+		"_postman_id": "72ce7321-7b62-4c1e-9264-785a7b162b3e",
+		"name": "Thruphone Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Family",
+			"item": [
+				{
+					"name": "[POST] Create Family",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Smith\",\n\t\"countryCode\": \"GBR\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/families",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"families"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[GET] Get Family",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/families/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"families",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[PUT] Full Update Family",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"name\": \"Nobre\",\n    \"countryCode\": \"PRT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/families/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"families",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[PATCH] Partial Update Family",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"countryCode\": \"PRT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/families/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"families",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[GET] Search Families by Country Code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/families/country/PRT?offset=0&limit=20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"families",
+								"country",
+								"PRT"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[DELETE] Delete Family",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/families/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"families",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[GET] Get All Families",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/families?offset=0&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"families"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[GET] Get Aged Family",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/families/aged",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"families",
+								"aged"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[GET] Get Fast Growing Family",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/families/fast-growing",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"families",
+								"fast-growing"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "FamilyMembers",
+			"item": [
+				{
+					"name": "[POST] Create Family Member",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"family\": {\n        \"id\": 1\n    },\n    \"firstName\": \"Miguel\",\n    \"lastName\": \"Nobre\",\n    \"dateOfBirth\": \"1992-10-14\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/family-members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"family-members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[POST] Create Family Member with Spouse",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"family\": {\n        \"id\": 1\n    },\n    \"spouse\": {\n    \t\"id\": \"1\"\n    },\n    \"firstName\": \"Lurdes\",\n    \"lastName\": \"Nobre\",\n    \"dateOfBirth\": \"1994-02-16\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/family-members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"family-members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[POST] Create Family Member with Father and Mother",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"family\": {\n        \"id\": 1\n    },\n    \"father\": {\n    \t\"id\": 1\n    },\n    \"mother\": {\n    \t\"id\": 2\n    },\n    \"firstName\": \"Manelito\",\n    \"lastName\": \"Nobre\",\n    \"dateOfBirth\": \"2018-06-14\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/family-members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"family-members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[POST] Create Family Member with Father and Mother and Spouse",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"family\": {\n        \"id\": 1\n    },\n    \"father\": {\n    \t\"id\": 1\n    },\n    \"mother\": {\n    \t\"id\": 2\n    },\n    \"spouse\": {\n    \t\"id\": 3\n    },\n    \"firstName\": \"Manelita\",\n    \"lastName\": \"Nobre\",\n    \"dateOfBirth\": \"2018-06-14\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/family-members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"family-members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Get] Get Family Members",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/family-members/families/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"family-members",
+								"families",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Get] Get Family Member",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/family-members/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"family-members",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[DELETE] Delete Family Member",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/family-members/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"family-members",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[PUT] Full Update Family Member",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 4,\n    \"family\": {\n        \"id\": 1,\n        \"name\": \"Nobre\",\n        \"countryCode\": \"PRT\"\n    },\n    \"firstName\": \"Isabelita\",\n    \"lastName\": \"Nobre\",\n    \"dateOfBirth\": \"2019-08-19\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/family-members/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"family-members",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[PATCH] Partial Update Family Member",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 6,\n    \"family\": {\n        \"id\": 2,\n        \"name\": \"Smith\",\n        \"countryCode\": \"GBR\"\n    },\n    \"spouse\": {\n    \t\"id\": 21\n    },\n    \"firstName\": \"Yolo\",\n    \"lastName\": \"Smith\",\n    \"dateOfBirth\": \"1952-04-25\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/family-members/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"family-members",
+								"6"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

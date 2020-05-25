@@ -6,6 +6,7 @@ spring:
     password: ${POSTGRES_PASSWORD:postgres}
 
   jpa:
+    show-sql: false
     properties:
       # The SQL dialect makes Hibernate generate better SQL for the chosen database
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect

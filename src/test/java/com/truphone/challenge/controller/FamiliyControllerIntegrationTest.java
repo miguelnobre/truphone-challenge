@@ -40,6 +40,19 @@ class FamiliyControllerIntegrationTest {
     }
 
     @Test
+    public void testCreateFamily_with_invalid_country_code() throws Exception {
+        FamilyDto newFamily = new FamilyDto();
+        newFamily.setName("New Family");
+        newFamily.setCountryCode("XYZ");
+
+        mockMvc.perform(post("/api/families")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(newFamily)))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
     public void testGetFamily() throws Exception {
         mockMvc.perform(get("/api/families/1"))
                 .andExpect(status().isOk())
@@ -175,6 +188,25 @@ class FamiliyControllerIntegrationTest {
     }
 
     @Test
+    public void testUpdateFamily_with_wrong_country_code() throws Exception {
+        mockMvc.perform(get("/api/families/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("name").value("Nobre"))
+                .andExpect(jsonPath("countryCode").value("PRT"));
+
+        FamilyDto familyToUpdate = new FamilyDto();
+        familyToUpdate.setId(1L);
+        familyToUpdate.setName("Updated Name");
+        familyToUpdate.setCountryCode("XYZ");
+
+        mockMvc.perform(put("/api/families/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(familyToUpdate)))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
     public void testPartialUpdateFamily() throws Exception {
         mockMvc.perform(get("/api/families/1"))
                 .andExpect(status().isOk())
@@ -191,6 +223,32 @@ class FamiliyControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value("Updated Name"))
                 .andExpect(jsonPath("countryCode").value("PRT"))
+                .andDo(print());
+    }
+
+    @Test
+    public void testPartialUpdateFamily_with_wrong_country_code() throws Exception {
+        mockMvc.perform(get("/api/families/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("name").value("Nobre"))
+                .andExpect(jsonPath("countryCode").value("PRT"));
+
+        FamilyDto familyToUpdate = new FamilyDto();
+        familyToUpdate.setId(1L);
+
+        familyToUpdate.setCountryCode("GBR");
+        mockMvc.perform(patch("/api/families/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(familyToUpdate)))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+
+        familyToUpdate.setCountryCode("XYZ");
+        mockMvc.perform(patch("/api/families/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(familyToUpdate)))
+                .andExpect(status().isBadRequest())
                 .andDo(print());
     }
 

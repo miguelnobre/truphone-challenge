@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import static com.truphone.challenge.util.UtilsService.checkIdConsistency;
+import static com.truphone.challenge.util.UtilsService.checkIsoCountryCodeIsValid;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +31,7 @@ public class FamilyService {
     private final FastGrowingFamilyRepository fastGrowingFamilyRepository;
 
     public Family createFamily(FamilyDto familyDto) {
+        checkIsoCountryCodeIsValid(familyDto.getCountryCode());
         return familyRepository.save(familyMapper.toEntity(familyDto));
     }
 
@@ -57,6 +59,7 @@ public class FamilyService {
 
     public Family updateFamily(Long id, FamilyDto familyDto) {
         checkIdConsistency(id, familyDto);
+        checkIsoCountryCodeIsValid(familyDto.getCountryCode());
 
         Family family = familyRepository.findById(familyDto.getId()).orElseThrow(FamilyNotFoundException::new);
         family.setName(familyDto.getName());
@@ -75,6 +78,7 @@ public class FamilyService {
         }
 
         if (familyDto.getCountryCode() != null) {
+            checkIsoCountryCodeIsValid(familyDto.getCountryCode());
             family.setCountryCode(familyDto.getCountryCode());
         }
 

@@ -12,12 +12,10 @@ import com.truphone.challenge.repository.AgedFamilyRepository;
 import com.truphone.challenge.repository.FamilyRepository;
 import com.truphone.challenge.repository.FastGrowingFamilyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.List;
 import java.util.Optional;
 
 import static com.truphone.challenge.util.UtilsService.checkIdConsistency;
@@ -39,12 +37,12 @@ public class FamilyService {
         return familyRepository.findById(id);
     }
 
-    public List<Family> getAllFamilies() {
-        return familyRepository.findAll();
+    public Page<Family> getAllFamilies(Pageable page) {
+        return familyRepository.findAll(page);
     }
 
-    public List<Family> getFamiliesByCountryCode(String isoCountryCode) {
-        return familyRepository.findAllByCountryCode(isoCountryCode);
+    public Page<Family> getFamiliesByCountryCode(String isoCountryCode, Pageable page) {
+        return familyRepository.findAllByCountryCode(isoCountryCode, page);
     }
 
     public Family deleteFamily(Long id) {
@@ -106,6 +104,12 @@ public class FamilyService {
                 .stream()
                 .findFirst()
                 .orElse(null);
+
+        // Fastest Growing Family is NULL when there aren't Family Members stored,
+        // otherwise always returns one element
+        if (fastGrowingFamily == null) {
+            return null;
+        }
 
         Family family = familyRepository.getOne(fastGrowingFamily.getFamilyId());
         FastGrowingFamilyDto fastGrowingFamilyDto = familyMapper.toDto(family, fastGrowingFamily.getGrowingRate());

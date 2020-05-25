@@ -9,9 +9,9 @@ import com.truphone.challenge.mapper.FamilyMemberMapper;
 import com.truphone.challenge.repository.FamilyMemberRepository;
 import com.truphone.challenge.repository.FamilyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static com.truphone.challenge.util.UtilsService.attachEntity;
 import static com.truphone.challenge.util.UtilsService.checkIdConsistency;
@@ -46,9 +46,9 @@ public class FamilyMemberService {
         return familyMemberRepository.findById(id).orElseThrow(FamilyMemberNotFoundException::new);
     }
 
-    public List<FamilyMember> findAllByFamily(Long familyId) {
+    public Page<FamilyMember> findAllByFamily(Long familyId, Pageable page) {
         Family family = familyRepository.findById(familyId).orElseThrow(FamilyNotFoundException::new);
-        return familyMemberRepository.findAllByFamily(family);
+        return familyMemberRepository.findAllByFamily(family, page);
     }
 
     public FamilyMember deleteFamilyMember(Long id) {

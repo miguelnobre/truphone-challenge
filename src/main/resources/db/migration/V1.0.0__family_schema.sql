@@ -25,7 +25,7 @@ CREATE TABLE family_member
     middle_name             VARCHAR(20)             NULL,
     last_name               VARCHAR(20)             NOT NULL,
     date_of_birth           DATE                    NOT NULL,
-    family_id               BIGINT                  NULL            REFERENCES family(id),
+    family_id               BIGINT                  NOT NULL        REFERENCES family(id),
     father_id               BIGINT                  NULL            REFERENCES family_member(id),
     mother_id               BIGINT                  NULL            REFERENCES family_member(id),
     family_marriage_id      BIGINT                  NULL            REFERENCES family_marriage(id),

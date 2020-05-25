@@ -4,10 +4,14 @@ import com.truphone.challenge.domain.Family;
 import com.truphone.challenge.dto.AgedFamilyDto;
 import com.truphone.challenge.dto.FamilyDto;
 import com.truphone.challenge.dto.FastGrowingFamilyDto;
+import com.truphone.challenge.dto.PageDto;
 import com.truphone.challenge.exception.FamilyNotFoundException;
 import com.truphone.challenge.mapper.FamilyMapper;
+import com.truphone.challenge.mapper.PageMapper;
 import com.truphone.challenge.service.FamilyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +21,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.net.URI;
-import java.util.List;
+
+import static com.truphone.challenge.util.Constants.DEFAULT_PAGE_SIZE;
 
 //The transaction needs to start at the Controller level due to the lazy load that occurs during the mapping
 @Transactional
@@ -30,6 +36,7 @@ import java.util.List;
 @RequestMapping("api/families")
 public class FamilyController {
 
+    private final PageMapper pageMapper;
     private final FamilyMapper familyMapper;
     private final FamilyService familyService;
 
@@ -50,17 +57,22 @@ public class FamilyController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FamilyDto>> getAllFamilies() {
-        List<Family> families = familyService.getAllFamilies();
+    public ResponseEntity<PageDto<FamilyDto>> getAllFamilies(@RequestParam(defaultValue = "0") Integer offset,
+                                                             @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer limit) {
 
-        return ResponseEntity.ok(familyMapper.toDto(families));
+        Page<Family> families = familyService.getAllFamilies(PageRequest.of(offset, limit));
+
+        return ResponseEntity.ok(pageMapper.toDto(families, familyMapper::toDto));
     }
 
     @GetMapping("/country/{isoCountryCode}")
-    public ResponseEntity<List<FamilyDto>> getFamiliesByCountryCode(@PathVariable String isoCountryCode) {
-        List<Family> familiesByCountryCode = familyService.getFamiliesByCountryCode(isoCountryCode);
+    public ResponseEntity<PageDto<FamilyDto>> getFamiliesByCountryCode(@PathVariable String isoCountryCode,
+                                                                       @RequestParam(defaultValue = "0") Integer offset,
+                                                                       @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer limit) {
 
-        return ResponseEntity.ok(familyMapper.toDto(familiesByCountryCode));
+        Page<Family> familiesByCountryCode = familyService.getFamiliesByCountryCode(isoCountryCode, PageRequest.of(offset, limit));
+
+        return ResponseEntity.ok(pageMapper.toDto(familiesByCountryCode, familyMapper::toDto));
     }
 
     @DeleteMapping("/{id}")

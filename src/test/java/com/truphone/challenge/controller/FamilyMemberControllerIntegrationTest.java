@@ -63,7 +63,7 @@ class FamilyMemberControllerIntegrationTest {
 
         mockMvc.perform(post("/api/family-members")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"family\":{\"id\":1},\"father\":{\"id\":1},\"mother\":{\"id\":2},\"firstName\":\"First Name\",\"middleName\":\"Middle Name\",\"lastName\":\"Last Name\",\"dateOfBirth\": \"2000-10-14\"}"))
+                .content(objectMapper.writeValueAsString(newFamilyMember)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("family.id").value(family.getId()))
                 .andExpect(jsonPath("father.id").value(father.getId()))
@@ -89,14 +89,46 @@ class FamilyMemberControllerIntegrationTest {
     public void getFamilyMembers() throws Exception {
         mockMvc.perform(get("/api/family-members/families/2"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("[0].family.id").value(2))
-                .andExpect(jsonPath("[0].family.name").value("Smith"))
-                .andExpect(jsonPath("[0].firstName").value("John"))
-                .andExpect(jsonPath("[0].lastName").value("Smith"))
-                .andExpect(jsonPath("[1].family.id").value(2))
-                .andExpect(jsonPath("[1].family.name").value("Smith"))
-                .andExpect(jsonPath("[1].firstName").value("Jane"))
-                .andExpect(jsonPath("[1].lastName").value("Smith"))
+                .andExpect(jsonPath("offset").value(0))
+                .andExpect(jsonPath("limit").value(10))
+                .andExpect(jsonPath("hasNext").value(false))
+                .andExpect(jsonPath("elements.[0].family.id").value(2))
+                .andExpect(jsonPath("elements.[0].family.name").value("Smith"))
+                .andExpect(jsonPath("elements.[0].firstName").value("John"))
+                .andExpect(jsonPath("elements.[0].lastName").value("Smith"))
+                .andExpect(jsonPath("elements.[1].family.id").value(2))
+                .andExpect(jsonPath("elements.[1].family.name").value("Smith"))
+                .andExpect(jsonPath("elements.[1].firstName").value("Jane"))
+                .andExpect(jsonPath("elements.[1].lastName").value("Smith"))
+                .andDo(print());
+    }
+
+    @Test
+    public void getFamilyMembers_with_two_pages() throws Exception {
+        mockMvc.perform(get("/api/family-members/families/2")
+                .param("offset", "0")
+                .param("limit", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("offset").value(0))
+                .andExpect(jsonPath("limit").value(1))
+                .andExpect(jsonPath("hasNext").value(true))
+                .andExpect(jsonPath("elements.[0].family.id").value(2))
+                .andExpect(jsonPath("elements.[0].family.name").value("Smith"))
+                .andExpect(jsonPath("elements.[0].firstName").value("John"))
+                .andExpect(jsonPath("elements.[0].lastName").value("Smith"))
+                .andDo(print());
+
+        mockMvc.perform(get("/api/family-members/families/2")
+                .param("offset", "1")
+                .param("limit", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("offset").value(1))
+                .andExpect(jsonPath("limit").value(1))
+                .andExpect(jsonPath("hasNext").value(false))
+                .andExpect(jsonPath("elements.[0].family.id").value(2))
+                .andExpect(jsonPath("elements.[0].family.name").value("Smith"))
+                .andExpect(jsonPath("elements.[0].firstName").value("Jane"))
+                .andExpect(jsonPath("elements.[0].lastName").value("Smith"))
                 .andDo(print());
     }
 

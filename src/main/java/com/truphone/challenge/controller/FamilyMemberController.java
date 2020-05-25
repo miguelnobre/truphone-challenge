@@ -2,9 +2,13 @@ package com.truphone.challenge.controller;
 
 import com.truphone.challenge.domain.FamilyMember;
 import com.truphone.challenge.dto.FamilyMemberDto;
+import com.truphone.challenge.dto.PageDto;
 import com.truphone.challenge.mapper.FamilyMemberMapper;
+import com.truphone.challenge.mapper.PageMapper;
 import com.truphone.challenge.service.FamilyMemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +18,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.net.URI;
-import java.util.List;
+
+import static com.truphone.challenge.util.Constants.DEFAULT_PAGE_SIZE;
 
 @Transactional
 @RestController
@@ -26,6 +32,7 @@ import java.util.List;
 @RequestMapping("api/family-members")
 public class FamilyMemberController {
 
+    private final PageMapper pageMapper;
     private final FamilyMemberMapper familyMemberMapper;
     private final FamilyMemberService familyMemberService;
 
@@ -48,10 +55,13 @@ public class FamilyMemberController {
     }
 
     @GetMapping("/families/{familyId}")
-    public ResponseEntity<List<FamilyMemberDto>> getFamilyMembers(@PathVariable Long familyId) {
-        List<FamilyMember> familyMembers = familyMemberService.findAllByFamily(familyId);
+    public ResponseEntity<PageDto<FamilyMemberDto>> getFamilyMembers(@PathVariable Long familyId,
+                                                                     @RequestParam(defaultValue = "0") Integer offset,
+                                                                     @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer limit) {
 
-        return ResponseEntity.ok(familyMemberMapper.toDto(familyMembers));
+        Page<FamilyMember> familyMembers = familyMemberService.findAllByFamily(familyId, PageRequest.of(offset, limit));
+
+        return ResponseEntity.ok(pageMapper.toDto(familyMembers, familyMemberMapper::toDto));
     }
 
     @DeleteMapping("/{id}")

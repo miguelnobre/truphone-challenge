@@ -186,6 +186,43 @@ class FamilyMemberControllerIntegrationTest {
     }
 
     @Test
+    public void testDestroyMarriage() throws Exception {
+        mockMvc.perform(get("/api/family-members/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("spouse").doesNotHaveJsonPath())
+                .andDo(print());
+
+        FamilyPersonDto spouse = new FamilyPersonDto();
+        spouse.setId(2L);
+
+        FamilyMemberDto familyMemberDto = new FamilyMemberDto();
+        familyMemberDto.setId(1L);
+        familyMemberDto.setSpouse(spouse);
+
+        mockMvc.perform(patch("/api/family-members/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(familyMemberDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("spouse.id").value(2))
+                .andDo(print());
+
+        MvcResult result = mockMvc.perform(get("/api/family-members/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("spouse.id").value(2))
+                .andReturn();
+
+        familyMemberDto = objectMapper.readValue(result.getResponse().getContentAsString(), FamilyMemberDto.class);
+        familyMemberDto.setSpouse(null);
+
+        mockMvc.perform(put("/api/family-members/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(familyMemberDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("spouse.id").doesNotHaveJsonPath())
+                .andDo(print());
+    }
+
+    @Test
     public void testAddSpouseAlreadyMarried() throws Exception {
         mockMvc.perform(get("/api/family-members/1"))
                 .andExpect(status().isOk())

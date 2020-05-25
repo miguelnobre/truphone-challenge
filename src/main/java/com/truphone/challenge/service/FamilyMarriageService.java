@@ -2,8 +2,8 @@ package com.truphone.challenge.service;
 
 import com.truphone.challenge.domain.FamilyMarriage;
 import com.truphone.challenge.domain.FamilyMember;
-import com.truphone.challenge.exception.FamilyMemberNotFoundException;
 import com.truphone.challenge.exception.SpouseAlreadyMarriedException;
+import com.truphone.challenge.exception.SpouseNotFoundException;
 import com.truphone.challenge.mapper.FamilyMarriageMapper;
 import com.truphone.challenge.repository.FamilyMarriageRepository;
 import com.truphone.challenge.repository.FamilyMemberRepository;
@@ -21,7 +21,7 @@ public class FamilyMarriageService {
     private final FamilyMarriageRepository familyMarriageRepository;
 
     public FamilyMarriage buildSpouseRelationShip(FamilyMember familyMember, Long spouseId) {
-        FamilyMember spouse = familyMemberRepository.findById(spouseId).orElseThrow(FamilyMemberNotFoundException::new);
+        FamilyMember spouse = familyMemberRepository.findById(spouseId).orElseThrow(SpouseNotFoundException::new);
         if (spouse.getFamilyMarriage() != null) {
             throw new SpouseAlreadyMarriedException();
         }

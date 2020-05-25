@@ -30,7 +30,9 @@ public class FamilyMemberService {
         FamilyMember newFamilyMember = familyMemberMapper.toEntity(familyMemberDto);
         familyMemberRepository.save(newFamilyMember);
 
-        familyMarriageService.buildSpouseRelationShip(newFamilyMember, familyMemberDto.getSpouse().getId());
+        if (familyMemberDto.getSpouse() != null) {
+            familyMarriageService.buildSpouseRelationShip(newFamilyMember, familyMemberDto.getSpouse().getId());
+        }
 
         // Attach related entities
         attachEntity(familyMemberDto.getFamily(), familyRepository::getOne, newFamilyMember::setFamily);

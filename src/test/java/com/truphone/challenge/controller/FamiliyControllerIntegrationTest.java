@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -134,7 +135,9 @@ class FamiliyControllerIntegrationTest {
         mockMvc.perform(get("/api/families/aged")
                 .contentType("application/json"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("averageAge").value("28"));
+                .andExpect(jsonPath("totalAge").value("224"))
+                .andExpect(jsonPath("averageAge").value("28.0"))
+                .andDo(print());
     }
 
     @Test
@@ -142,6 +145,7 @@ class FamiliyControllerIntegrationTest {
         mockMvc.perform(get("/api/families/fast-growing")
                 .contentType("application/json"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("growingRate").value("0.05"));
+                .andExpect(jsonPath("growingRate").value("0.05"))
+                .andDo(print());
     }
 }

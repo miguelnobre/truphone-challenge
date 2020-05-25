@@ -95,11 +95,8 @@ public class FamilyService {
             return null;
         }
 
-        LocalDate averageEpochAsDate = LocalDate.ofInstant(Instant.ofEpochSecond(agedFamily.getAvgAgeAsEpoch().longValue()), ZoneId.systemDefault());
-        int averageAge = LocalDate.now().getYear() - averageEpochAsDate.getYear();
-
         Family family = familyRepository.getOne(agedFamily.getFamilyId());
-        AgedFamilyDto agedFamilyDto = familyMapper.toDto(family, averageAge);
+        AgedFamilyDto agedFamilyDto = familyMapper.toDto(family, agedFamily);
 
         return agedFamilyDto;
     }

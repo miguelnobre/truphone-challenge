@@ -1,6 +1,7 @@
 package com.truphone.challenge.mapper;
 
 import com.truphone.challenge.domain.Family;
+import com.truphone.challenge.domain.view.AgedFamilyView;
 import com.truphone.challenge.dto.AgedFamilyDto;
 import com.truphone.challenge.dto.FamilyDto;
 import com.truphone.challenge.dto.FastGrowingFamilyDto;
@@ -20,8 +21,7 @@ public interface FamilyMapper {
     @Mapping(target = "id", ignore = true)
     Family toEntity(FamilyDto familyDto);
 
-    AgedFamilyDto toDto(Family agedFamily, int averageAge);
+    AgedFamilyDto toDto(Family agedFamily, AgedFamilyView agedFamilyView);
 
-    @Mapping(source = "growingRate", target = "growingRate", qualifiedByName = "percentageRepresentation")
     FastGrowingFamilyDto toDto(Family agedFamily, BigDecimal growingRate);
 }

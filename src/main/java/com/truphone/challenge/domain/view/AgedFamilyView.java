@@ -5,6 +5,7 @@ import org.hibernate.annotations.Immutable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.math.BigDecimal;
 
 @Getter
 @Immutable
@@ -13,8 +14,6 @@ public class AgedFamilyView {
 
     @Id
     private Long familyId;
-
-    private Double sumAgeAsEpoch;
-
-    private Double avgAgeAsEpoch;
+    private int totalAge;
+    private BigDecimal averageAge;
 }

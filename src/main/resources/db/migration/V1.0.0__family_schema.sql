@@ -36,16 +36,16 @@ CREATE TABLE family_member
 -- View With Aged Family
 CREATE VIEW v_aged_family AS
     SELECT
-     fm.family_id,
-     SUM(EXTRACT(EPOCH FROM fm.date_of_birth)) AS sum_age_as_epoch,
-     AVG(EXTRACT(EPOCH FROM fm.date_of_birth)) AS avg_age_as_epoch
+        fm.family_id,
+        SUM(EXTRACT(YEAR FROM now()) - EXTRACT(YEAR FROM fm.date_of_birth))::integer AS total_age,
+        AVG(EXTRACT(YEAR FROM now()) - EXTRACT(YEAR FROM fm.date_of_birth))::decimal AS average_age
     FROM
-     family_member fm
-    group BY
-     fm.family_id
+        family_member fm
+    GROUP BY
+        fm.family_id
     ORDER BY
-        2 ASC,
-        3 ASC
+        2 DESC,
+        3 DESC
     LIMIT 1;
 
 -- View with Fast Growing Family
